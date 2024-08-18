@@ -31,6 +31,7 @@ export default function Navbar(props) {
       </ul>
    
       <div className={`d-flex mx-2 ${props.myColor}`}>
+        <p className={`mx-2 text-${props.myMode==='light'?'dark' : 'light'}`}>Change with custome colors: </p>
         <button value="#563d7c" onClick={props.colorChange} className='btn p-2 rounded-circle border-light m-1'  style={{ backgroundColor: '#563d7c', height:'20px', width:'20px'}}></button>
         <button value="#4c535a" onClick={props.colorChange} className='btn p-2 rounded-circle border-light m-1'  style={{ backgroundColor: '#4c535a', height:'20px', width:'20px'}}></button>
         <button value="#3c1a1a" onClick={props.colorChange} className='btn p-2 rounded-circle border-light m-1'  style={{ backgroundColor: '#3c1a1a', height:'20px', width:'20px'}}></button>

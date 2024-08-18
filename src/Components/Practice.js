@@ -132,6 +132,7 @@ export default function Practice(props) {
         <p>
         {text.trim().length === 0 ? 0 : text.trim().split(/\s+/).length} words and {text.length} Characters
         </p>
+        <p>{0.007 * text.split(" ").length} mintues read</p>
             <h2>Preview</h2>
                 <p>{text.length>0?text:"Enter the text to preview"}</p>
         </div>
