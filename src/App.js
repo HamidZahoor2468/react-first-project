@@ -1,10 +1,12 @@
+
 import React, { useState } from 'react';
 import './App.css';
-import Navbar from './components/Navbar';  // This should match the file path and export
-// import TextForm from './components/TextForm';
+import Navbar from './components/Navbar';
+import TextForm from './components/TextForm';
 import Practice from './components/Practice';
 import Alert from './components/Alert';
-// import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+// import { createBrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   const [myMode, setMyMode] = useState("light");
@@ -65,44 +67,60 @@ function App() {
   //   {
   //     path: "/",
   //     element: <>    <Navbar
-  //     logoName="Hamid"
-  //     myMode={myMode}
-  //     toggleMode={toggleMode}
-  //     myColor={myColor}
-  //     colorChange={colorChange}
-  //   /><Alert myAlert={alert} />
-  //   <Practice Heading="Enter the Text" myMode={myMode} showAlert={showAlert} />
-  //   </>
+  //       logoName="Hamid"
+  //       myMode={myMode}
+  //       toggleMode={toggleMode}
+  //       myColor={myColor}
+  //       colorChange={colorChange}
+  //     /><Alert myAlert={alert} />
+  //       <Practice Heading="Enter the Text" myMode={myMode} showAlert={showAlert} />
+  //     </>
   //   },
   //   {
   //     path: "/textform",
-  //     element: <>    <Navbar
-  //     logoName="Hamid"
-  //     myMode={myMode}
-  //     toggleMode={toggleMode}
-  //     myColor={myColor}
-  //     colorChange={colorChange}
-  //   />   <Alert myAlert={alert} /><TextForm myMode={myMode}/></>
+  //     element: <Home />
   //   }
   // ])
+
+  const Layout = () => {
+    return (
+      <>
+        <Navbar
+          logoName="Hamid"
+          myMode={myMode}
+          toggleMode={toggleMode}
+          myColor={myColor}
+          colorChange={colorChange}
+        />
+        <Alert myAlert={alert} />
+      </>
+    )
+  }
 
 
   return (
     <>
-     <Navbar
+      {/* <Navbar
       logoName="Hamid"
       myMode={myMode}
       toggleMode={toggleMode}
       myColor={myColor}
       colorChange={colorChange}
-    />
-    <Alert myAlert={alert} />
-    <Practice Heading="Enter the Text" myMode={myMode} showAlert={showAlert} />
+    /> */}
 
-      
-      {/* <RouterProvider router={router}/> */}
-      
-   
+      {/* <Alert myAlert={alert} />
+
+    <Practice Heading="Enter the Text" myMode={myMode} showAlert={showAlert} /> */}
+
+      {/* <RouterProvider router={router} /> */}
+
+      <BrowserRouter>
+        <Layout />
+        <Routes>
+          <Route path='/home' element={<Practice Heading="Enter the Text" myMode={myMode} showAlert={showAlert} />} />
+          <Route path='/textForm' element={<TextForm myMode={myMode} />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

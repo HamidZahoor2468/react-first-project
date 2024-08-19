@@ -1,10 +1,21 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
+
+const Button = ({ title, onPress = () => { }, isLightMode }) => (
+    <button
+        className="btn btn-danger m-1 myDiv"
+        onClick={onPress}
+        style={{
+            backgroundColor: isLightMode ? 'white' : '#041f3a',
+            color: isLightMode ? 'black' : 'white'
+        }}
+    >{title}</button>
+)
 
 export default function Practice(props) {
-    const [text, setText] = useState("Enter the text here")
+    const [text, setText] = useState("")
     const [speech, setSpeech] = useState("Speech Text")
-    const [isSpeaking , setIsSpeaking] = useState(false)
-    const [isFirst , setIsFirst] = useState(true)
+    const [isSpeaking, setIsSpeaking] = useState(false)
+    const [isFirst, setIsFirst] = useState(true)
     // const [myStyle, setMyStyle] = useState({
     //     color : 'black',
     //     backgroundColor : 'white'
@@ -12,77 +23,77 @@ export default function Practice(props) {
     // const [myDark, setMyDark] = useState("Dark Mode")
     const [myCopy, setMyCopy] = useState("Copy Text")
 
-    const OnChangehandler = (event) =>{
+    const OnChangehandler = (event) => {
         setText(event.target.value)
     }
 
-    const onUpClick = () =>{
+    const onUpClick = () => {
         if (text.trim() === "") {
             props.showAlert("First You Have to Enter the text to Change it Uppercase", "danger")
-        }else{
-        let newText = text.toUpperCase();
-        setText(newText);
-        props.showAlert("Converted to Uppercase", "success")
-    }
+        } else {
+            let newText = text.toUpperCase();
+            setText(newText);
+            props.showAlert("Converted to Uppercase", "success")
+        }
 
     }
 
-    const onLowClick = () =>{ 
+    const onLowClick = () => {
         if (text.trim() === "") {
-        props.showAlert("First You Have to Enter the text to Change it Lowercase", "danger")
-        }else{
-        let newText = text.toLocaleLowerCase();
-        setText(newText);
-        props.showAlert("Converted to Lowercase", "success") 
+            props.showAlert("First You Have to Enter the text to Change it Lowercase", "danger")
+        } else {
+            let newText = text.toLocaleLowerCase();
+            setText(newText);
+            props.showAlert("Converted to Lowercase", "success")
         }
     }
 
-    const onSpeech = () =>{
+    const onSpeech = () => {
         if (!isSpeaking) {
             let speechText = new SpeechSynthesisUtterance(text)
             window.speechSynthesis.speak(speechText)
             setSpeech("Mute me")
             setIsSpeaking(true)
 
-            speechText.onend = () =>{
+            speechText.onend = () => {
                 setSpeech("Speech Text")
                 setIsSpeaking(false)
             }
         }
-        else{
+        else {
             window.speechSynthesis.cancel()
             setSpeech("Speech Text")
             setIsSpeaking(false)
         }
-        
+
     }
 
-    const clearText = () =>{
+    const clearText = () => {
         if (isFirst) {
             setText("")
-            setIsFirst(false)   
+            setIsFirst(false)
         }
+    }
+
+    const onClearText = () => {
+        if (text.trim() === "") {
+            props.showAlert("You don't have any text to clear", "danger");
+        } else {
+            setText("");
+            props.showAlert("Text Cleared", "success");
         }
-  
-        const onClearText = () => {
-            if (text.trim() === "") {
-                props.showAlert("You don't have any text to clear", "danger");
-            } else {
-                setText("");
-                props.showAlert("Text Cleared", "success");
-            }
-        }
-    
+    }
 
     const onTrim = () => {
-        if (text.trim()==="") {
+        if (text.trim() === "") {
             props.showAlert("You don't have any text to trimed", "danger");
-        }else{
-        let newText = text.replace(/\s+/g, ' ').trim()
-        setText(newText)
-        props.showAlert("Text Trimed", "success")
+        } else {
+            let newText = text.replace(/\s+/g, ' ').trim()
+            setText(newText)
+            props.showAlert("Text Trimed", "success")
+        }
     }
-    }
+
     // const onDark = () => {
     //    if (myStyle.color === 'black') {
     //         setMyStyle({
@@ -101,42 +112,52 @@ export default function Practice(props) {
     // }
 
     const onCopy = () => {
-        if (text.trim()==="") {
+        if (text.trim() === "") {
             props.showAlert("You don't have any text to Copied", "danger");
-        }else{
-        navigator.clipboard.writeText(text).then(() => {
-            setMyCopy("Copied..");
-            setTimeout(() => setMyCopy("Copy Text"), 10000); 
-            props.showAlert("Text copied to clipboard", "success")
-        }).catch(() => {
-            setMyCopy("Failed to Copy");
-        });
+        } else {
+            navigator.clipboard.writeText(text).then(() => {
+                setMyCopy("Copied..");
+                setTimeout(() => setMyCopy("Copy Text"), 10000);
+                props.showAlert("Text copied to clipboard", "success")
+            }).catch(() => {
+                setMyCopy("Failed to Copy");
+            });
+        }
     }
-    }
 
-    return(
-    <div style={{backgroundColor: props.myMode==='light'?'white' : '#041f3a',color : props.myMode==='light'?'black' : 'white' }}className='container myDiv p-3 rounded-4' >
-        <h1>{props.Heading}</h1>
-        <div className="mb-3"  >
-        <textarea className="form-control myDiv" style={{backgroundColor: props.myMode==='light'?'white' : 'gray',color : props.myMode==='light'?'black' : 'white' }} onClick={props.colorChange} value={text} onChange={OnChangehandler} onFocus={clearText} id="exampleFormControlTextarea1" rows="8"></textarea>
+    return (
+        <div style={{ backgroundColor: props.myMode === 'light' ? 'white' : '#041f3a', color: props.myMode === 'light' ? 'black' : 'white' }} className='container myDiv p-3 rounded-4' >
+            <h1>{props.Heading}</h1>
+            <div className="mb-3"  >
+                <textarea placeholder='Enter the text here' className="form-control myDiv" style={{ backgroundColor: props.myMode === 'light' ? 'white' : 'gray', color: props.myMode === 'light' ? 'black' : 'white' }} onClick={props.colorChange} value={text} onChange={OnChangehandler} onFocus={clearText} id="exampleFormControlTextarea1" rows="8"></textarea>
+            </div>
+
+            <Button title={'Upper Case'} onPress={onUpClick} isLightMode={props.myMode === 'light'} />
+            <Button title={'Lower Case'} onPress={onLowClick} isLightMode={props.myMode === 'light'} />
+            <Button title={speech} onPress={onSpeech} isLightMode={props.myMode === 'light'} />
+            <Button title={'Clear Text'} onPress={onClearText} isLightMode={props.myMode === 'light'} />
+            <Button title={'Trim Text'} onPress={onTrim} isLightMode={props.myMode === 'light'} />
+            <Button title={myCopy} onPress={onCopy} isLightMode={props.myMode === 'light'} />
+
+            {/* <button className="btn btn-danger m-1 myDiv" onClick={onUpClick} style={{ backgroundColor: props.myMode === 'light' ? 'white' : '#041f3a', color: props.myMode === 'light' ? 'black' : 'white' }} >Upper Case</button>
+            <button className="btn btn-danger m-1 myDiv" onClick={onLowClick} style={{ backgroundColor: props.myMode === 'light' ? 'white' : '#041f3a', color: props.myMode === 'light' ? 'white' : 'black' }}>Lower Case</button>
+            <button className="btn btn-danger m-1 myDiv" onClick={onSpeech} style={{ backgroundColor: props.myMode === 'light' ? 'white' : '#041f3a', color: props.myMode === 'light' ? 'black' : 'white' }}></button>
+            <button className="btn btn-danger m-1 myDiv" onClick={onClearText} style={{ backgroundColor: props.myMode === 'light' ? 'white' : '#041f3a', color: props.myMode === 'light' ? 'black' : 'white' }}>Clear Text</button>
+            <button className="btn btn-danger m-1 myDiv" onClick={onTrim} style={{ backgroundColor: props.myMode === 'light' ? 'white' : '#041f3a', color: props.myMode === 'light' ? 'black' : 'white' }}>Trim Text</button>
+            <button className="btn btn-danger m-1 myDiv" onClick={onCopy} style={{ backgroundColor: props.myMode === 'light' ? 'white' : '#041f3a', color: props.myMode === 'light' ? 'black' : 'white' }}>{myCopy}</button> */}
+
+
+            <div>
+                <p>
+
+                    {/* {text.split(" ").length} words and {text.length} Characters */}
+                    {text.split(" ").filter((element) => { return element.length !== 0 }).length} words and {text.length} Characterss
+                    {/* {text.trim().length === 0 ? 0 : text.trim().split(/\s+/).length} words and {text.length} Characters */}
+                </p>
+                <p>{0.007 * text.split(" ").length} mintues read</p>
+                <h2>Preview</h2>
+                <p>{text.length > 0 ? text : "Enter the text to preview"}</p>
+            </div>
         </div>
-        <button className="btn btn-danger m-1 myDiv" onClick={onUpClick}  style={{backgroundColor: props.myMode==='light'?'white' : '#041f3a',color : props.myMode==='light'?'black' : 'white' }} >Upper Case</button>
-        <button className="btn btn-danger m-1 myDiv" onClick={onLowClick} style={{backgroundColor: props.myMode==='light'?'white' : '#041f3a',color : props.myMode==='light'?'black' : 'white' }}>Lower Case</button>
-        <button className="btn btn-danger m-1 myDiv" onClick={onSpeech} style={{backgroundColor: props.myMode==='light'?'white' : '#041f3a',color : props.myMode==='light'?'black' : 'white' }}>{speech}</button>
-        <button className="btn btn-danger m-1 myDiv" onClick={onClearText} style={{backgroundColor: props.myMode==='light'?'white' : '#041f3a',color : props.myMode==='light'?'black' : 'white' }}>Clear Text</button>
-        <button className="btn btn-danger m-1 myDiv" onClick={onTrim} style={{backgroundColor: props.myMode==='light'?'white' : '#041f3a',color : props.myMode==='light'?'black' : 'white' }}>Trim Text</button>
-        <button className="btn btn-danger m-1 myDiv" onClick={onCopy} style={{backgroundColor: props.myMode==='light'?'white' : '#041f3a',color : props.myMode==='light'?'black' : 'white' }}>{myCopy}</button>
-
-
-        <div>
-        <p>
-        {text.split(" ").filter((element)=>{return element.length!==0}).length} words and {text.length} Characterss
-        {/* {text.trim().length === 0 ? 0 : text.trim().split(/\s+/).length} words and {text.length} Characters */}
-        </p>
-        <p>{0.007 * text.split(" ").length} mintues read</p>
-            <h2>Preview</h2>
-                <p>{text.length>0?text:"Enter the text to preview"}</p>
-        </div>
-    </div>
     )
 }
